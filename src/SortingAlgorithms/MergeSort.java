@@ -1,6 +1,6 @@
 package SortingAlgorithms;
 
-import Model.Series;
+import Model.LSManga.Series;
 
 public class MergeSort {
 

@@ -1,7 +1,7 @@
 package SortingAlgorithms;
 
 import Model.Parameter;
-import Model.Series;
+import Model.LSManga.Series;
 
 public class Quicksort {
     private static Parameter p;

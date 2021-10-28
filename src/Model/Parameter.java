@@ -1,5 +1,7 @@
 package Model;
 
+import Model.LSManga.Series;
+
 public class Parameter {
     private Series[] arr;
     private int l;

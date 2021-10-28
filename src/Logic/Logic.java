@@ -1,7 +1,7 @@
 package Logic;
 
-import Model.LSManga;
-import Model.Series;
+import Model.LSManga.LSManga;
+import Model.LSManga.Series;
 import SortingAlgorithms.MergeSort;
 import SortingAlgorithms.Quicksort;
 import com.google.gson.Gson;
