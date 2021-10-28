@@ -76,6 +76,7 @@ public class Logic {
                     break;
 
                 case 4:
+                    System.out.println("See you soon!");
                     break;
 
                 default:
