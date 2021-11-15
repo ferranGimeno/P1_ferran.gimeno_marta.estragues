@@ -7,14 +7,18 @@ import SortingAlgorithms.Quicksort;
 import com.google.gson.Gson;
 import com.google.gson.stream.JsonReader;
 
+import javax.swing.text.html.parser.Parser;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
+import java.nio.charset.StandardCharsets;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.Scanner;
 
 public class Logic {
     private static final int N_ITERATIONS = 5;
     private static final String[] PATH_DEBUG = {"Datasets\\Datasets JSON\\series_S.json", "Datasets\\Datasets JSON\\series_M.json", "Datasets\\Datasets JSON\\series_L.json"};
-    private static final String PATH = "Datasets\\Datasets JSON\\series_M.json";
+    private static final String PATH = "Datasets\\Datasets JSON\\series_S.json";
     MergeSort mergeSort = new MergeSort();
     Quicksort quickSort = new Quicksort();
 
@@ -53,9 +57,10 @@ public class Logic {
             System.out.println("3) Sort by priority (Quicksort)");
             System.out.println("4) Exit");
             System.out.println("\nSelect an option: ");
-            option = scan.nextInt();
+            //option = scan.nextInt();
             System.out.println();
 
+            option = 2;
             switch(option){
                 case 1:
                     //calculateTimeDebug(1);
@@ -71,7 +76,7 @@ public class Logic {
                     break;
 
                 case 3:
-                    //calculateTimeDebug();
+                    //calculateTimeDebug(3);
                     //series = Quicksort.sort(lsManga.getSeries(), 0, lsManga.getSeries().length - 1);
                     break;
 
