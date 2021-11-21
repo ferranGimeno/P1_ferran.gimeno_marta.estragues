@@ -1,6 +1,7 @@
 package SortingAlgorithms;
 
 import Model.LSManga.Series;
+import Model.LSManga.StartDate;
 
 public class MergeSort {
 
@@ -22,7 +23,7 @@ public class MergeSort {
         int cur = i;
         Series[] b = new Series[a.length];
         while(l <= mig && r <= j){
-            if(a[l].getAverageScore() >= a[r].getAverageScore()){
+            if(calculateDateValue(a[l].getStartDate()) >= calculateDateValue(a[r].getStartDate())){
                 b[cur] = a[l];
                 l++;
             }else{
@@ -48,5 +49,11 @@ public class MergeSort {
             k++;
         }
         return a;
+    }
+
+    public static int calculateDateValue(StartDate startDate) {
+        int date;
+        date = startDate.getYear()*10000 + startDate.getMonth()*100 + startDate.getDay();
+        return date;
     }
 }

@@ -28,6 +28,7 @@ public class Series {
     @SerializedName("startDate")
     @Expose
     private StartDate startDate;
+    private double priorityComb;
 
     public Series() {
     }
@@ -99,4 +100,11 @@ public class Series {
         this.startDate = startDate;
     }
 
+    public double getPriorityComb() {
+        return priorityComb;
+    }
+
+    public void setPriorityComb(double priorityComb) {
+        this.priorityComb = priorityComb;
+    }
 }

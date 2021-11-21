@@ -1,12 +1,15 @@
 package SortingAlgorithms;
 
-import Model.Parameter;
 import Model.LSManga.Series;
+import Model.Parameter;
+import Model.ParameterB;
 
-public class Quicksort {
-    private static Parameter p;
+import java.util.LinkedList;
 
-    public static Series[] sort(Series[] series, int i, int j){
+public class BucketQuickSort {
+    private static ParameterB p;
+
+    public static LinkedList<Series> sort(LinkedList<Series> series, int i, int j){
         if (i < j) {
             p = particio(series, i, j);
             p.setArr(sort(series, i, p.getR()));
@@ -15,24 +18,24 @@ public class Quicksort {
         return p.getArr();
     }
 
-    public static Parameter particio(Series[] series, int low, int high) {
-        Parameter param = new Parameter(series, low, high);
+    public static ParameterB particio(LinkedList<Series> series, int low, int high) {
+        ParameterB param = new ParameterB(series, low, high);
         param.setL(low);
         param.setR(high);
         int mig = (low + high)/2;
-        Series pivot = series[mig];
+        Series pivot = series.get(mig);
 
         while (param.getL() <= param.getR()) {
-            while (series[param.getL()].getPriorityComb() > pivot.getPriorityComb()) {
+            while (series.get(param.getL()).getAverageScore() > pivot.getAverageScore()) {
                 param.setL(param.getL() + 1);
             }
-            while (series[param.getR()].getPriorityComb() < pivot.getPriorityComb()) {
+            while (series.get(param.getR()).getAverageScore() < pivot.getAverageScore()) {
                 param.setR(param.getR() - 1);
             }
             if (param.getL() < param.getR()) {
-                Series tmp = series[param.getL()];
-                series[param.getL()] = series[param.getR()];
-                series[param.getR()] = tmp;
+                Series tmp = series.get(param.getL());
+                series.set(param.getL(), series.get(param.getR()));
+                series.set(param.getR(), tmp);
                 param.setL(param.getL() + 1);
                 param.setR(param.getR() - 1);
             } else {

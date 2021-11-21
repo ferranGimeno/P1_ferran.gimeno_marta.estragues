@@ -3,6 +3,9 @@ package Model.LSManga;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+
 public class StartDate {
 
     @SerializedName("year")
@@ -44,6 +47,11 @@ public class StartDate {
 
     public void setDay(Integer day) {
         this.day = day;
+    }
+
+    public DateFormat toDate() {
+        String date = this.getYear() + "/" + this.getMonth()+ "/" + this.getDay();
+        return new SimpleDateFormat(date);
     }
 
 }
