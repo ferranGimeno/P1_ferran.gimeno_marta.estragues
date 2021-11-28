@@ -10,14 +10,12 @@ import com.google.gson.stream.JsonReader;
 
 import java.io.FileNotFoundException;
 import java.io.FileReader;
+import java.text.DecimalFormat;
 import java.util.LinkedList;
 import java.util.Scanner;
 
 public class Logic {
-    private static final int N_ITERATIONS = 5;
-    private static final String[] PATH_DEBUG = {"Datasets\\Datasets JSON\\series_S.json", "Datasets\\Datasets JSON\\series_M.json", "Datasets\\Datasets JSON\\series_L.json"};
     private static final String PATH = "Datasets\\Datasets JSON\\series_S.json";
-
     private static LSManga lsManga;
     private static Series[] series;
     private static final LinkedList<Series> seriesLinkedList = new LinkedList<>();
@@ -49,7 +47,7 @@ public class Logic {
             if (lsManga.getSeries()[i].getStartDate().getYear() == null) {
                 lsManga.getSeries()[i].getStartDate().setYear(1);
             }
-            lsManga.getSeries()[i].setPriorityComb(((0.7) * lsManga.getSeries()[i].getAverageScore() / lsManga.getSeries()[i].getPopularity() + (0.3) * lsManga.getSeries()[i].getFavourites() / lsManga.getSeries()[i].getPopularity()) / 2 * 100);
+            lsManga.getSeries()[i].setPriorityComb(((0.01)*lsManga.getSeries()[i].getAverageScore() + (float)lsManga.getSeries()[i].getFavourites() / lsManga.getSeries()[i].getPopularity())*100 + (float)lsManga.getSeries()[i].getPopularity()/10000);
             seriesLinkedList.add(lsManga.getSeries()[i]);
         }
     }
@@ -62,7 +60,7 @@ public class Logic {
             System.out.println("--= Sorting Algorithms =--\n");
             System.out.println("1) Sort series by average score (Bucket Sort)");
             System.out.println("2) Sort by date (Merge Sort)");
-            System.out.println("3) Sort by priority (Quicksort)");
+            System.out.println("3) Sort by priority (Quick Sort)");
             System.out.println("4) Exit");
             System.out.println("\nSelect an option: ");
             option = scan.nextInt();
@@ -95,11 +93,12 @@ public class Logic {
                     System.out.println("Time: " + accumulated);
                 }
                 case 3 -> {
+                    DecimalFormat df = new DecimalFormat("#.##");
                     start = System.currentTimeMillis();
                     series = Quicksort.sort(lsManga.getSeries(), 0, lsManga.getSeries().length - 1);
                     System.out.println("Rank - Title - Priority\n");
                     for (int i = 0; i < series.length; i++) {
-                        System.out.println(i + 1 + " - " + series[i].getTitle().getRomaji() + " - " + series[i].getPriorityComb() + "\n Popularity: " + series[i].getPopularity() + "\n Average score: " + series[i].getAverageScore() + "\n Fav: " + series[i].getFavourites());
+                        System.out.println(i + 1 + " - " + series[i].getTitle().getRomaji() + " - " + df.format(series[i].getPriorityComb()) + "\n Popularity: " + series[i].getPopularity() + "\n Average score: " + series[i].getAverageScore() + "\n Fav: " + series[i].getFavourites());
                     }
                     System.out.println("\n");
                     accumulated += System.currentTimeMillis() - start;
@@ -109,67 +108,6 @@ public class Logic {
                 default -> System.out.println("\nError. Enter a number between 1 and 4.\n");
             }
         } while (option != 4);
-    }
-
-    public static void calculateTimeDebug(int option) {
-        LSManga[] lsMangaa = new LSManga[PATH_DEBUG.length];
-        for (int i = 0; i < PATH_DEBUG.length; i++) {
-            Gson gson = new Gson();
-            JsonReader reader;
-
-            try {
-                reader = new JsonReader(new FileReader(PATH_DEBUG[i]));
-                lsMangaa[i] = gson.fromJson(reader, LSManga.class);
-                sanitizeJson(lsMangaa[i]);
-            } catch (FileNotFoundException e) {
-                e.printStackTrace();
-            }
-        }
-        for (int i = 0; i < lsMangaa.length; i++) {
-            // We take 5 measures and average them out to smooth the results
-            long accumulated = 0;
-            for (int j = 0; j < N_ITERATIONS; j++) {
-                long start;
-                switch (option){
-                    case 1:
-                        start = System.currentTimeMillis();
-                        LinkedList<Series> averageScoreList = BucketSort.sort(seriesLinkedList);
-                        System.out.println("Rank - Title - Average Score\n");
-                        for (int k = 0; k < averageScoreList.size(); k++) {
-                            System.out.println(i + 1 + " - " + averageScoreList.get(i).getTitle().getRomaji() + " - " + averageScoreList.get(i).getAverageScore());
-                        }
-                        System.out.println("\n");
-                        accumulated += System.currentTimeMillis() - start;
-                        break;
-
-                    case 2:
-                        start = System.currentTimeMillis();
-                        series = MergeSort.sort(lsManga.getSeries(), 0, lsManga.getSeries().length - 1);
-                        System.out.println("Rank - Title - Date\n");
-                        for (int k = 0; k < series.length; k++) {
-                            System.out.println(i + 1 + " - " + series[i].getTitle().getRomaji() + " - " + series[i].getStartDate().getDay() + "/" + series[i].getStartDate().getMonth() + "/" + series[i].getStartDate().getYear());
-                        }
-                        System.out.println("\n");
-                        accumulated += System.currentTimeMillis() - start;
-                        break;
-
-                    case 3:
-                        start = System.currentTimeMillis();
-                        series = Quicksort.sort(lsManga.getSeries(), 0, lsManga.getSeries().length - 1);
-                        System.out.println("Rank - Title - Priority\n");
-                        for (int k = 0; k < series.length; k++) {
-                            System.out.println(i + 1 + " - " + series[i].getTitle().getRomaji() + " - " + series[i].getPriorityComb() + "\n Popularity: "+ series[i].getPopularity() + "\n Average score: " + series[i].getAverageScore() + "\n Fav: " + series[i].getFavourites());
-                        }
-                        System.out.println("\n");
-                        accumulated += System.currentTimeMillis() - start;
-                        break;
-
-
-                }
-                // Figure out how much time has passed (and accumulate it)
-            }
-            System.out.println(accumulated / N_ITERATIONS);
-        }
     }
 }
 
